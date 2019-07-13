@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+
+<body>
+    <h1>{{ user.username }}'s profile</h1>
+    <div name="description">
+        {% if user.profile.description == '' %}
+            This user's profile is empty...
+        {% else %}
+            {{ user.profile.description }}
+        {% endif %}
+    </div>
+</body>
+
+</html>

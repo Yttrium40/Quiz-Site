@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+
+<body>
+    <form action="{% url 'users:registering' %}" method="post">
+    {% csrf_token %}
+        Username: <input type="text" name="username_input"><br>
+        Password: <input type="password" name="password_input"><br>
+        Confirm Password: <input type="password" name="password_confirm"><br>
+        <input type="submit" value="Register">
+    </form>
+
+    {% if error_messages %}
+    <ul>
+    {% for message in error_messages %}
+        <li><strong>{{ message }}</strong></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+</body>
+
+</html>
