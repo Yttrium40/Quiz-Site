@@ -1,0 +1,15 @@
+<div name="navbar">
+    <a href="{% url 'home' %}">Home</a>
+
+    {% if current_user %}
+        <a href="{% url 'users:profile' username=current_user.username %}">Profile</a>
+    {% else %}
+        <a href="{% url 'users:register' %}">Profile</a>
+    {% endif %}
+
+    {% if current_user %}
+        <a href="{% url 'users:logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'users:login' %}">Login</a>
+    {% endif %}
+</div>

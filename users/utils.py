@@ -1,5 +1,11 @@
 from django.contrib.auth.models import User
 
+def get_current_user(request):
+    if request.user.is_authenticated:
+        return request.user
+    else:
+        return None
+
 def validate_new_user(username, password, confirm_password):
     error_messages = []
     if len(username) == 0:

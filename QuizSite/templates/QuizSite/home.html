@@ -1,3 +1,5 @@
+{% include 'partial/partial_navbar.html' with current_user=current_user %}
+
 <h1>Hello and welcome to QuizSite!</h1>
 <ul>
     <li><a href="{% url 'users:register' %}">Register</a></li>
