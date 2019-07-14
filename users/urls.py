@@ -10,4 +10,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('registering/', views.registering, name='registering'),
     path('profile/<username>/', views.profile, name='profile'),
+    path('ajax/profile_update/', views.ajax_profile_update, name='ajax_profile_update'),
 ]

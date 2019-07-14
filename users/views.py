@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 import django.contrib.auth as django_auth
@@ -62,3 +62,10 @@ def profile(request, username):
         'current_user': get_current_user(request),
         'user': user
     })
+
+def ajax_profile_update(request):
+    new_description = request.POST['description']
+    current_user = get_current_user(request)
+    current_user.profile.description = new_description
+    current_user.save()
+    return HttpResponse()

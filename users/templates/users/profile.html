@@ -6,13 +6,65 @@
     {% include 'partial/partial_navbar.html' with current_user=current_user %}
 
     <h1>{{ user.username }}'s profile</h1>
-    <div name="description">
+    <div name="description" id="id_description">
+    {% csrf_token %}
         {% if user.profile.description == '' %}
             This user's profile is empty...
         {% else %}
             {{ user.profile.description }}
         {% endif %}
     </div>
+    {% if current_user.username == user.username %}
+    <button name="edit_button" id="id_edit_button">Edit</button>
+    <button hidden name="save_button" id="id_save_button">Save</button>
+    {% endif %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% if current_user.username == user.username %}
+    <script>
+        $(document).ready(function() {
+            let $description = $("#id_description");
+            let $editButton = $("#id_edit_button");
+            let $saveButton = $("#id_save_button");
+            let $csrf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+
+            $editButton.on("click", function() {
+                $editButton.hide();
+                $saveButton.show();
+                $editTextArea = $(`<textarea>${$.trim($description.text())}</textarea>`);
+                $description.replaceWith($editTextArea);
+                $editTextArea.focus();
+
+                $saveButton.on("click", function() {
+                    $saveButton.hide();
+                    $editButton.show();
+
+                    $.ajax({
+                        url: "/users/ajax/profile_update/",
+                        data: {
+                            description: $editTextArea.val()
+                        },
+                        headers:{"X-CSRFToken": $csrf_token},
+                        type: "POST",
+                        dataType: "html"
+                    })
+                        .done((response) => {
+                            $description.text($editTextArea.val());
+                            $editTextArea.replaceWith($description);
+                        })
+                        .fail((xhr, status, errorThrown) => {
+                            console.log("Ajax error!");
+                            console.log("Error: " + errorThrown);
+                            console.log("Status: " + status);
+                        })
+                        .always(() => {
+                            $saveButton.off("click");
+                        });
+                });
+            });
+        });
+    </script>
+    {% endif %}
 </body>
 
 </html>
