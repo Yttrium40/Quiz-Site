@@ -9,4 +9,4 @@ How to run
 ----------
 1. Download Python and Django and make sure both are accessible through the PATH.
 2. Navigate to the directory you downloaded QuizSite to with the commmand line, then type "python manage.py runserver".
-3. Go to localhost:8000 (127.0.0.1) on your web browser.
+3. Go to localhost:8000 (127.0.0.1:8000) on your web browser.
