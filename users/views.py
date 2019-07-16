@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .models import Profile
+from quizzes.models import Quiz
 from .utils import get_current_user, validate_new_user
 
 def login(request):
@@ -69,3 +70,21 @@ def ajax_profile_update(request):
     current_user.profile.description = new_description
     current_user.save()
     return HttpResponse()
+
+def own_quizzes(request, username):
+    user = get_object_or_404(User, username=username)
+    quizzes = user.authored_set.all()
+    return render(request, 'users/quizzes.html', {
+        'current_user': get_current_user(request),
+        'user': user,
+        'quizzes': quizzes
+    })
+
+def taken_quizzes(request, username):
+    user = get_object_or_404(User, username=username)
+    quizzes = user.taken_set.all()
+    return render(request, 'users/quizzes.html', {
+        'current_user': get_current_user(request),
+        'user': user,
+        'quizzes': quizzes
+    })

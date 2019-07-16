@@ -18,6 +18,8 @@
     <button name="edit_button" id="id_edit_button">Edit</button>
     <button hidden name="save_button" id="id_save_button">Save</button>
     {% endif %}
+    <a href="{% url 'users:own_quizzes' username=user.username %}">Created quizzes</a>
+    <a href="{% url 'users:taken_quizzes' username=user.username %}">Taken quizzes</a>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     {% if current_user.username == user.username %}

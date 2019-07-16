@@ -11,4 +11,6 @@ urlpatterns = [
     path('registering/', views.registering, name='registering'),
     path('profile/<username>/', views.profile, name='profile'),
     path('ajax/profile_update/', views.ajax_profile_update, name='ajax_profile_update'),
+    path('profile/<username>/quizzes/own/', views.own_quizzes, name='own_quizzes'),
+    path('profile/<username>/quizzes/taken/', views.taken_quizzes, name='taken_quizzes'),
 ]
