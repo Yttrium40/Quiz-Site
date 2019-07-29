@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+
+<body>
+    {% include 'partial/partial_navbar.html' with current_user=current_user %}
+
+    <form action="{% url 'quizzes:creating' %}" method="post">
+    {% csrf_token %}
+        <text>Name: </text><input type="text" name="name_input"></input><br>
+
+        <button id="id_add_question" onclick="return false;">Add question</button>
+        <input type="submit" value="Create"></input>
+    </form>
+
+    {% if error_messages %}
+    <ul>
+    {% for message in error_messages %}
+        <li><strong>{{ message }}</strong></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $addQuestion = $("#id_add_question");
+            outerQuestionIndex = 0;
+
+            $addQuestion.on("click", function() {
+                innerQuestionIndex = outerQuestionIndex++;
+
+                $addChoice = $('<button name="add_choice" onclick="return false;">Add choice</button>')
+                $questionContainer = $(`<div name="question_${innerQuestionIndex}_container"></div>`);
+                $questionContainer.append($(`<text>Question: </text><input type="text" name="question_${innerQuestionIndex}"></input><br>`))
+                                  .append($addChoice)
+                                  .insertBefore($addQuestion);
+
+                choiceIndex = 0;
+
+                $addChoice.on("click", function() {
+                    $(`<text>Choice: </text><input type="text" name="question_${innerQuestionIndex}_choice_${choiceIndex++}"></input><br>`).insertBefore($(this));
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

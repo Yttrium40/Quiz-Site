@@ -28,7 +28,7 @@
             let $description = $("#id_description");
             let $editButton = $("#id_edit_button");
             let $saveButton = $("#id_save_button");
-            let $csrf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+            let $csrfToken = $('[name="csrfmiddlewaretoken"]').attr('value');
 
             $editButton.on("click", function() {
                 $editButton.hide();
@@ -46,7 +46,7 @@
                         data: {
                             description: $editTextArea.val()
                         },
-                        headers:{"X-CSRFToken": $csrf_token},
+                        headers:{"X-CSRFToken": $csrfToken},
                         type: "POST",
                         dataType: "html"
                     })

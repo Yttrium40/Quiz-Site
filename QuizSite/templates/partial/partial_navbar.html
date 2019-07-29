@@ -12,5 +12,11 @@
     {% else %}
     <a href="{% url 'users:login' %}">Login</a>
     {% endif %}
+
+    {% if current_user %}
+    <a href="{% url 'quizzes:create' %}">Create Quiz</a>
+    {% else %}
+    <a href="{% url 'users:register' %}">Create Quiz</a>
+    {% endif %}
 </div>
 <br><br>

@@ -1,13 +1,15 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
 import django.contrib.auth as django_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+
+from quizzes.models import Quiz
 
 from .models import Profile
-from quizzes.models import Quiz
 from .utils import get_current_user, validate_new_user
+
 
 def login(request):
     return render(request, 'users/login.html', {
@@ -73,7 +75,7 @@ def ajax_profile_update(request):
 
 def own_quizzes(request, username):
     user = get_object_or_404(User, username=username)
-    quizzes = user.authored_set.all()
+    quizzes = user.authored_set.all()[::-1]
     return render(request, 'users/quizzes.html', {
         'current_user': get_current_user(request),
         'user': user,
@@ -82,7 +84,7 @@ def own_quizzes(request, username):
 
 def taken_quizzes(request, username):
     user = get_object_or_404(User, username=username)
-    quizzes = user.taken_set.all()
+    quizzes = user.taken_set.all()[::-1]
     return render(request, 'users/quizzes.html', {
         'current_user': get_current_user(request),
         'user': user,

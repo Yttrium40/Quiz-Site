@@ -8,5 +8,19 @@ class Quiz(models.Model):
     date_created = models.DateTimeField(default=timezone.now, editable=False)
     taken_by = models.ManyToManyField(User, related_name='taken_set')
 
+    def __str__(self):
+        return self.name
+
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    text = models.TextField(default="My Question", max_length=500)
+
+    def __str__(self):
+        return self.text
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(default="My Choice", max_length=100)
+
+    def __str__(self):
+        return self.text
