@@ -78,3 +78,11 @@ def creating(request):
             new_choice.save()
 
     return HttpResponseRedirect(reverse('users:own_quizzes', args=(user.username,)))
+
+def details(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+
+    return render(request, 'quizzes/details.html', {
+        'current_user': get_current_user(request),
+        'quiz': quiz
+    })

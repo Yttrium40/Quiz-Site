@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+
+<body>
+    {% include 'partial/partial_navbar.html' with current_user=current_user %}
+
+    <h3>{{ quiz.name }}</h3>
+    <p>Made by: <a href="{% url 'users:profile' username=quiz.author.username %}">{{ quiz.author.username }}</a></p>
+    <p>On: {{ quiz.date_created }}</p>
+</body>
+
+</html>

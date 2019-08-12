@@ -8,8 +8,7 @@
     {% if quizzes %}
     <ul>
     {% for quiz in quizzes %}
-        <!--this will have a link to the details view when it's implemented-->
-        <li>{{ quiz.name }}</li>
+        <li><a href="{% url 'quizzes:details' pk=quiz.pk %}">{{ quiz.name }}</a></li>
     {% endfor %}
     </ul>
     {% else %}
