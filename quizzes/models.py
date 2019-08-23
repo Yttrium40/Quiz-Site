@@ -24,3 +24,8 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.text
+
+class Answers(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    answerer = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE)
+    choices = []

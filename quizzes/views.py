@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from users.utils import get_current_user
 
-from .models import Quiz, Question, Choice
+from .models import Quiz, Question, Choice, Answers
 from .utils import validate_nonempty_quiz_elements
 import copy
 
@@ -80,9 +80,46 @@ def creating(request):
     return HttpResponseRedirect(reverse('users:own_quizzes', args=(user.username,)))
 
 def details(request, pk):
-    quiz = Quiz.objects.get(pk=pk)
+    quiz = get_object_or_404(Quiz, pk=pk)
 
     return render(request, 'quizzes/details.html', {
         'current_user': get_current_user(request),
         'quiz': quiz
     })
+
+def take(request, pk):
+    quiz = get_object_or_404(Quiz, pk=pk)
+
+    return render(request, 'quizzes/take.html', {
+        'current_user': get_current_user(request),
+        'quiz': quiz,
+        'error_messages': []
+    })
+
+def taken(request, pk):
+    quiz = get_object_or_404(Quiz, pk=pk)
+    user = get_current_user(request)
+    answers = None
+
+    try:
+        answers = Answers.objects.get(answerer__pk=user.pk, quiz__pk=quiz.pk)
+        answers.choices = []
+    except (Answers.DoesNotExist):
+        answers = Answers(quiz=quiz, answerer=user)
+
+    try:
+        for question in quiz.question_set.all():
+            choice_pk = request.POST[f'question_{question.pk}_choice']
+            answers.choices.append(choice_pk)
+    except (KeyError, Choice.DoesNotExist):
+        return render(request, 'quizzes/take.html', {
+            'current_user': get_current_user(request),
+            'quiz': quiz,
+            'error_messages': ['All questions must be answered.']
+        })
+    answers.save()
+
+    quiz.taken_by.add(user)
+    quiz.save()
+    
+    return HttpResponseRedirect(reverse('users:taken_quizzes', args=(user.username,)))
